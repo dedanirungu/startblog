@@ -17,9 +17,11 @@ class PostController extends Controller
      */
     public function index(Request $request): View
     {
-        $selectedCategory = $request->filled('category')
-            ? Category::where('slug', $request->string('category'))->firstOrFail()
-            : null;
+        if ($request->filled('category')) {
+            $selectedCategory = Category::where('slug', $request->string('category'))->firstOrFail();
+        } else {
+            $selectedCategory = null;
+        }
 
         $posts = Post::query()
             ->with('category')
